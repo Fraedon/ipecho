@@ -23,8 +23,8 @@ func echoIP(w http.ResponseWriter, r *http.Request) {
 	// Don't do anything else — keep the connection allive
 
 	// Echo the client's IP address
-	addr := []byte(r.RemoteAddr)
-	conn.WriteMessage(websocket.TextMessage, addr)
+	conn.WriteMessage(websocket.TextMessage, []byte(conn.RemoteAddr().Network()))
+	conn.WriteMessage(websocket.TextMessage, []byte(conn.RemoteAddr().String()))
 }
 
 func main() {
