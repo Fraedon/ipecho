@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	"github.com/tomasen/realip"
 )
 
 var serverAddr = flag.String("a", "localhost:8000", "The address for the server ot listen on")
@@ -23,8 +24,8 @@ func echoIP(w http.ResponseWriter, r *http.Request) {
 	// Don't do anything else — keep the connection allive
 
 	// Echo the client's IP address
-	conn.WriteMessage(websocket.TextMessage, []byte(conn.RemoteAddr().Network()))
-	conn.WriteMessage(websocket.TextMessage, []byte(conn.RemoteAddr().String()))
+	ip := realip.FromRequest(r)
+	conn.WriteMessage(websocket.TextMessage, []byte(ip))
 }
 
 func main() {
